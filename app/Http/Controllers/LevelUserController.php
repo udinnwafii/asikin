@@ -13,7 +13,7 @@ class LevelUserController extends Controller
     public function index()
     {
         $data = level_user::all();
-        return view('level_user.index');
+        return view('level_user.index', compact('data'));
     }
 
     /**
@@ -21,7 +21,7 @@ class LevelUserController extends Controller
      */
     public function create()
     {
-        return view('level_user.create');
+       //
     }
 
     /**
@@ -29,17 +29,12 @@ class LevelUserController extends Controller
      */
     public function store(Request $request)
     {
-        $validasiData = $request->validate(
-            [
-                
-                'nama'=> 'required'
-                
-            ]
-        );
+        $validasiData = $request->validate([
+            'nama' => 'required'
+        ]);
 
         $simpan = level_user::create($validasiData);
-
-        return redirect('/leveluser')->with('success','record created successfully!');
+        return redirect('/level_user')->with('success', 'Record created successfully!');
     }
 
     /**
@@ -47,7 +42,7 @@ class LevelUserController extends Controller
      */
     public function show(string $id)
     {
-        
+      //
     }
 
     /**
@@ -55,40 +50,33 @@ class LevelUserController extends Controller
      */
     public function edit(string $id)
     {
-        $data = level_user::findOrFile($id);
-        return view('level_user.edit', compact ('data'));
+        $data = level_user::findOrFail($id);
+        return view('level_user.edit', compact('data'));
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        $validasiData = $request->validate(
-            [
-                'nama'=>'required'
-            ]
-        );
+{
+    $validatedData = $request->validate([
+        'nama' => 'required',
+    ]);
 
-         // Find the record to be updated
-        $data = level_user::findOrFile($id);
+    $data = level_user::findOrFail($id);
+    $data->update($validatedData);
 
+    return redirect('/level_user')->with('success', 'Record updated successfully!');
+}
 
-          // Update the record with the validated data
-        $data->update($validasiData);
-
-
-        // Redirect to a page or return a response
-        return redirect('/level_user')->with('success','Record Update successfully!');
-    }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        $data = level_user::findOrFile($id);
+        $data = level_user::findOrFail($id);
         $data->delete();
-        return redirect('/level_user')->with('success','Record Deleted successfully!');
+        return redirect('/level_user')->with('success', 'Record deleted successfully!');
     }
 }

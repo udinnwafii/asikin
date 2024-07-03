@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\tingkat_studi;
 use Illuminate\Http\Request;
 
 class TingkatStudiController extends Controller
@@ -11,7 +12,8 @@ class TingkatStudiController extends Controller
      */
     public function index()
     {
-        //
+        $data = tingkat_studi::all();
+        return view('tingkat_studi.index', compact('data'));
     }
 
     /**
@@ -19,7 +21,7 @@ class TingkatStudiController extends Controller
      */
     public function create()
     {
-        //
+       //
     }
 
     /**
@@ -27,7 +29,12 @@ class TingkatStudiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validasiData = $request->validate([
+            'nama' => 'required'
+        ]);
+
+        $simpan = tingkat_studi::create($validasiData);
+        return redirect('/tingkat_studi')->with('success', 'Record created successfully!');
     }
 
     /**
@@ -35,7 +42,7 @@ class TingkatStudiController extends Controller
      */
     public function show(string $id)
     {
-        //
+      //
     }
 
     /**
@@ -43,22 +50,33 @@ class TingkatStudiController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = tingkat_studi::findOrFail($id);
+        return view('tingkat_studi.edit', compact('data'));
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        //
-    }
+{
+    $validatedData = $request->validate([
+        'nama' => 'required',
+    ]);
+
+    $data = tingkat_studi::findOrFail($id);
+    $data->update($validatedData);
+
+    return redirect('/tingkat_studi')->with('success', 'Record updated successfully!');
+}
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        $data = tingkat_studi::findOrFail($id);
+        $data->delete();
+        return redirect('/tingkat_studi')->with('success', 'Record deleted successfully!');
     }
 }
