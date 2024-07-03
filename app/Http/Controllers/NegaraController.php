@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\benua;
+use App\Models\negara;
 use Illuminate\Http\Request;
 
 class NegaraController extends Controller
@@ -11,7 +13,9 @@ class NegaraController extends Controller
      */
     public function index()
     {
-        //
+        $data = negara::with('benua')->get();
+        $benua = benua::all();
+        return view('negara.index', ['data' => $data, 'benua' => $benua]);
     }
 
     /**
@@ -26,9 +30,19 @@ class NegaraController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
-    }
+{
+    $validate = $request->validate([
+        'nama' => 'required',
+        'id_benua' => 'required',
+    ]);
+
+    Negara::create($validate);
+
+    return redirect('/negara')
+        ->with('success', 'Berhasil Melakukan Pengiriman');
+}
+
+
 
     /**
      * Display the specified resource.
@@ -43,7 +57,10 @@ class NegaraController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $benua = benua::all();
+        $data = negara::findOrFail($id);
+
+        return view('negara.edit', compact('data', 'benua'));
     }
 
     /**
@@ -51,7 +68,15 @@ class NegaraController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = negara::findOrFail($id);
+
+        $validate = $request->validate([
+            'nama' => 'required',
+            'id_benua' => 'required'
+        ]);
+    
+        $data->update($validate);
+        return redirect('/negara')->with('success', 'Berhasil mengupdate negara');
     }
 
     /**
@@ -59,6 +84,9 @@ class NegaraController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $negara = negara::findOrFail($id);
+        $negara->delete();
+
+        return redirect()->route('negara.index')->with('success', 'Negara deleted successfully.');
     }
 }

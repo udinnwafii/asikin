@@ -9,4 +9,9 @@ class benua extends Model
 {
     use HasFactory;
     protected $fillable = ['nama'];
+
+    public function negara()
+    {
+        return $this->hasMany(negara::class, 'id_benua', 'id');
+    }
 }

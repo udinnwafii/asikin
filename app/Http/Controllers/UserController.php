@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\level_user;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -11,7 +13,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view ('user.index');
+        $data = User::with('level_user')->get();
+        $level_user = level_user::all();
+        return view ('user.index', ['data' => $data, 'level_user' => $level_user]);
     }
 
     /**

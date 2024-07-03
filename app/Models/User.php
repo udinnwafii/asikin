@@ -26,8 +26,14 @@ class User extends Authenticatable
         'alamat',
         'tanggal_lahir',
     ];
-    public function id_level_user(){
+    public function id_level_user()
+    {
         return $this->belongsTo(level_user::class, 'id_level_user', 'id');
+    }
+
+    public function kalender_siswa()
+    {
+        return $this->hasMany(kalender_beasiswa::class);
     }
 
     /**

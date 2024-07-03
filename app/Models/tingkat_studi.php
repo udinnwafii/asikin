@@ -9,4 +9,9 @@ class tingkat_studi extends Model
 {
     use HasFactory;
     protected $fillable = ['nama'];
+
+    public function kategori()
+    {
+        return $this->hasMany(kategori::class, 'id_kategori', 'id');
+    }
 }

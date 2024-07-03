@@ -61,20 +61,22 @@ Tambah Level User
     </div>
 </div>
 </div>
-
+@php
+$no = 1;
+@endphp
 {{-- Table --}}
 <table id="example2" class="table table-bordered table-hover">
 <thead>
     <tr>
         <th>No</th>
         <th>Nama</th>
-        <th>Actions</th>
+        <th>Aksi</th>
     </tr>
 </thead>
 <tbody>
-    @foreach ($data as $index => $item)
+    @foreach ($data as  $item)
         <tr>
-            <td>{{ $index + 1 }}</td>
+            <td>{{ $no++ }}</td>
             <td>{{ $item->nama }}</td>
             <td>
                 <form action="{{ route('level_user.destroy', $item->id) }}" method="post">

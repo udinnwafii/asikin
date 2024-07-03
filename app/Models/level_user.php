@@ -9,4 +9,9 @@ class level_user extends Model
 {
     use HasFactory;
     protected $fillable = ['nama'];
+
+    public function user()
+    {
+        return $this->hasMany(User::class, 'id_user', 'id');
+    }
 }
