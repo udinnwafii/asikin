@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'nama',
         'email',
         'password',
         'id_level_user',
@@ -26,15 +26,7 @@ class User extends Authenticatable
         'alamat',
         'tanggal_lahir',
     ];
-    public function id_level_user()
-    {
-        return $this->belongsTo(level_user::class, 'id_level_user', 'id');
-    }
 
-    public function kalender_siswa()
-    {
-        return $this->hasMany(kalender_beasiswa::class);
-    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -55,4 +47,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function level_user()
+    {
+        return $this->belongsTo(level_user::class, 'id_level_user', 'id');
+    }
 }
