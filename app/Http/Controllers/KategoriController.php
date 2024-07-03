@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\kategori;
+use App\Models\negara;
+use App\Models\tingkat_studi;
 use Illuminate\Http\Request;
 
 class KategoriController extends Controller
@@ -12,16 +14,10 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        $data = kategori::all();
-        return view ('kategori.index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view ('kategori.create');
+        $data = kategori::with('tingkat_studi', 'negara')->get();
+        $tingkat_studi = tingkat_studi::all();
+        $negara = negara::all();
+        return view('kategori.index', ['data' => $data, 'tingkat_studi' => $tingkat_studi, 'negara' => $negara]);
     }
 
     /**
@@ -29,38 +25,40 @@ class KategoriController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $validatedData = $request->validate([
+            'id_tingkat_studi' => 'required',
+            'id_negara' => 'required'
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        kategori::create($validatedData);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        return redirect()->route('kategori.index')->with('success', 'Kategori created successfully.');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $validatedData = $request->validate([
+            'id_tingkat_studi' => 'required',
+            'id_negara' => 'required'
+        ]);
+
+        $kategori = kategori::findOrFail($id);
+        $kategori->update($validatedData);
+
+        return redirect()->route('kategori.index')->with('success', 'Kategori updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $kategori = kategori::findOrFail($id);
+        $kategori->delete();
+
+        return redirect()->route('kategori.index')->with('success', 'Kategori deleted successfully.');
     }
 }
