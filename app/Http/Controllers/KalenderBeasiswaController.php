@@ -35,7 +35,6 @@ class KalenderBeasiswaController extends Controller
     {
         $validatedData = $request->validate([
             'id_kategori' => 'required',
-            'id_user' => 'required',
             'tanggal_registrasi' => 'required',
             'deadline' => 'required',
             'judul' => 'required',
@@ -81,7 +80,6 @@ class KalenderBeasiswaController extends Controller
     {
         $validatedData = $request->validate([
             'id_kategori' => 'required',
-            'id_user' => 'required',
             'tanggal_registrasi' => 'required',
             'deadline' => 'required',
             'judul' => 'required',

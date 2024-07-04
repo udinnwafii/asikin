@@ -57,7 +57,7 @@ Tambah Level User
         <div class="modal-footer">
             <button type="submit" class="btn btn-warning">Simpan</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
+        </form></div>
     </div>
 </div>
 </div>
@@ -112,7 +112,7 @@ $no = 1;
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Save changes</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+                </form></div>
             </div>
         </div>
     </div>

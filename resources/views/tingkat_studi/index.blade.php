@@ -53,12 +53,12 @@
                                 <label for="nama">Nama Tingkat Studi</label>
                                 <input type="text" name="nama" class="form-control" id="nama" required>
                             </div>
-                        </form>
                     </div>
                     <div class="modal-footer">
                         <button type="submit"  class="btn btn-warning">Simpan</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
+                    </form>
+                </div>
                 </div>
             </div>
         </div>
@@ -128,11 +128,11 @@
         <label for="nama">Nama Tingkat Studi</label>
         <input type="text" name="nama" class="form-control" id="nama" value="{{ $item->nama }}" required>
     </div>
-</form>
 </div>
 <div class="modal-footer">
-<button type="submit" class="btn btn-primary">Save changes</button>
-<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-primary">Save changes</button>
+    </form>
 </div>
 </div>
 </div>

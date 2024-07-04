@@ -53,7 +53,7 @@ Tambah Kategori
                 <label for="id_tingkat_studi">Tingkat Studi</label>
                 <select class="form-control" name="id_tingkat_studi">
                     <option value="">Pilih Tingkat Studi</option>
-                    @foreach ($tingkat_studi as i)
+                    @foreach ($tingkat_studi as $i)
                     <option value="{{ $i->id }}">{{ $i->nama }}</option>
                     @endforeach
                 </select>
@@ -66,12 +66,12 @@ Tambah Kategori
                 </select>
             </div>
             
-        </form>
     </div>
     <div class="modal-footer">
         <button type="submit" class="btn btn-primary">Simpan</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-    </div>
+    </form>
+</div>
 </div>
 </div>
 </div>
@@ -126,7 +126,7 @@ $no = 1;
                         <label for="id_tingkat_studi">Tingkat Studi</label>
                         <select class="form-control" name="id_tingkat_studi">
                             <option value="">Pilih Tingkat Studi</option>
-                            @foreach ($tingkat_studi as i)
+                            @foreach ($tingkat_studi as $i)
                             <option value="{{ $i->id }}" @if ($i->id == $item->id_tingkat_studi) selected @endif>{{ $i->nama }}</option>
                             @endforeach
                         </select>

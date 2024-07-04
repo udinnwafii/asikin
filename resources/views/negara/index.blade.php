@@ -56,7 +56,7 @@ Tambah Negara
             <<select class="form-control" name="id_benua">
                 <option value="">Pilih Benua</option>
                 @foreach ($benua as $i)
-                    <option value="{{ $i->id }}">{{ $b->nama }}</option>
+                    <option value="{{ $i->id }}">{{ $i->nama }}</option>
                 @endforeach
             </select>
         </div>
@@ -65,7 +65,7 @@ Tambah Negara
 <div class="modal-footer">
     <button type="submit" class="btn btn-warning">Simpan</button>
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-</div>
+</form></div>
 </div>
 </div>
 </div>
@@ -121,15 +121,17 @@ $no = 1;
                     <select class="form-control" name="id_benua">
                         <option value="">Pilih Benua</option>
                         @foreach ($benua as $i)
-                        <option value="{{ $i->id }}" @if ($i->id == $item->id_benua) selected @endif>{{ $b->nama }}</option>
+                        <option value="{{ $i->id }}" @if ($i->id == $item->id_benua) selected @endif>{{ $i->nama }}</option>
                         @endforeach
                     </select>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                <div class="modal-footer"><button type="submit"  class="btn btn-warning">Simpan</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </form>
                 </div>
-            </form>
+        </div>
+            </div>
+            </div>
 </div>
 </div>
 @endforeach
