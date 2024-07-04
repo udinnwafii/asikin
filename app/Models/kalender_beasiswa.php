@@ -8,17 +8,34 @@ use Illuminate\Database\Eloquent\Model;
 class kalender_beasiswa extends Model
 {
     use HasFactory;
-    protected $fillable = ['id_kategori', 'id_user', 'tanggal_registrasi', 'deadline', 
-    'judul', 'deskrips', 'jurusan', 'jenis_beasiswa', 'keuntungan', 'umur', 'gpa', 'tes_english',
-    'tes_bahasa_lain', 'tes_standard', 'dokumen', 'lainnya', 'status_tampil'];
 
-    public function id_kategori()
+    protected $fillable = [
+        'id_kategori',
+        'id_user',
+        'tanggal_registrasi',
+        'deadline',
+        'judul',
+        'deskripsi',
+        'jurusan',
+        'jenis_beasiswa',
+        'keuntungan',
+        'umur',
+        'gpa',
+        'tes_english',
+        'tes_bahasa_lain',
+        'tes_standard',
+        'dokumen',
+        'lainnya',
+        'status_tampil'
+    ];
+
+    public function kategori()
     {
-        $this->belongsTo(kategori::class, 'id_kategori', 'id');
+        return $this->belongsTo(Kategori::class, 'id_kategori');
     }
 
-    public function id_user()
+    public function user()
     {
-        $this->belongsTo(User::class, 'id_user', 'id');
+        return $this->belongsTo(User::class, 'id_user');
     }
 }

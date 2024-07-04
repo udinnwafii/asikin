@@ -52,10 +52,10 @@ Tambah Benua
                     <label for="nama">Nama Benua</label>
                     <input type="text" name="nama" class="form-control" id="nama" required>
                 </div>
-                <button type="submit" class="btn btn-warning">Simpan</button>
             </form>
         </div>
         <div class="modal-footer">
+            <button type="submit" class="btn btn-warning">Simpan</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
     </div>
@@ -107,10 +107,10 @@ $no = 1;
                             <label for="nama">Nama Benua</label>
                             <input type="text" name="nama" class="form-control" id="nama" value="{{ $item->nama }}" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
                     </form>
                 </div>
                 <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save changes</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>

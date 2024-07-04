@@ -19,4 +19,10 @@ class kategori extends Model
     {
         return $this->belongsTo(negara::class, 'id_negara');
     }
+
+    public function kalender_beasiswas()
+    {
+        return $this->hasMany(kalender_beasiswa::class, 'id_kategori');
+    }
+
 }

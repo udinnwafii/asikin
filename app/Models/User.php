@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(level_user::class, 'id_level_user', 'id');
     }
+
+    public function kalender_beasiswa()
+    {
+        return $this->hasMany(kalender_beasiswa::class, 'id_user', 'id');
+    }
 }
