@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\kalender_beasiswa;
-use App\Models\kategori;
-use App\Models\User;
+use App\Models\negara;
+use App\Models\tingkat_studi;
 use Illuminate\Http\Request;
 
 class KalenderBeasiswaController extends Controller
@@ -14,10 +14,10 @@ class KalenderBeasiswaController extends Controller
      */
     public function index()
     {
-        $data = kalender_beasiswa::with('kategori', 'user')->get();
-        $kategori = Kategori::all();
-        $user = User::all();
-        return view('kalender_beasiswa.index', ['data' => $data, 'kategori' => $kategori, 'user' => $user]);
+        $data = kalender_beasiswa::with('negara', 'tingkat_Studi')->get();
+        $negara = negara::all();
+        $tingkat_studi = tingkat_studi::all();
+        return view('kalender_beasiswa.index', ['data' => $data, 'negara' => $negara, 'tingkat_studi' => $tingkat_studi]);
     }
 
     /**
@@ -32,30 +32,42 @@ class KalenderBeasiswaController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'id_kategori' => 'required',
-            'tanggal_registrasi' => 'required',
-            'deadline' => 'required',
-            'judul' => 'required',
-            'deskripsi' => 'nullable',
-            'jurusan' => 'required',
-            'jenis_beasiswa' => 'required',
-            'keuntungan' => 'required',
-            'umur' => 'required',
-            'gpa' => 'required',
-            'tes_english' => 'nullable',
-            'tes_bahasa_lain' => 'nullable',
-            'tes_standard' => 'nullable',
-            'dokumen' => 'nullable',
-            'lainnya' => 'nullable',
-            'status_tampil' => 'required'
+{
+    // Debugging line to see the incoming request data
+    // dd($request->all());
+
+    $validatedData = $request->validate([
+        'id_negara' => 'nullable|array',
+        'id_tingkat_studi' => 'nullable|array',
+        'tanggal_registrasi' => 'nullable',
+        'deadline' => 'nullable',
+        'judul' => 'nullable',
+        'deskripsi' => 'nullable',
+        'jurusan' => 'nullable',
+        'jenis_beasiswa' => 'nullable',
+        'keuntungan' => 'nullable',
+        'umur' => 'nullable',
+        'gpa' => 'nullable',
+        'tes_english' => 'nullable',
+        'tes_bahasa_lain' => 'nullable',
+        'tes_standard' => 'nullable',
+        'dokumen' => 'nullable',
+        'lainnya' => 'nullable',
+        'status_tampil' => 'nullable'
         ]);
 
-        kalender_beasiswa::create($validatedData);
+        $kalenderBeasiswa = kalender_beasiswa::create($validatedData);
 
-        return redirect()->route('kalender_beasiswa.index')->with('success', 'Kalender Beasiswa created successfully.');
-    }
+        if ($request->has('id_negara')) {
+            $kalenderBeasiswa->negara()->attach($request->id_negara);
+        }
+
+        if ($request->has('id_tingkat_studi')) {
+            $kalenderBeasiswa->tingkat_studi()->attach($request->id_tingkat_studi);
+        }
+    
+    return view ('kalender_beasiswa.index')->with('success', 'Kalender Beasiswa created successfully.');
+}
 
     /**
      * Display the specified resource.
@@ -79,22 +91,22 @@ class KalenderBeasiswaController extends Controller
     public function update(Request $request, string $id)
     {
         $validatedData = $request->validate([
-            'id_kategori' => 'required',
-            'tanggal_registrasi' => 'required',
-            'deadline' => 'required',
-            'judul' => 'required',
-            'deskripsi' => 'required',
-            'jurusan' => 'required',
-            'jenis_beasiswa' => 'required',
-            'keuntungan' => 'required',
-            'umur' => 'required',
-            'gpa' => 'required',
-            'tes_english' => 'required',
-            'tes_bahasa_lain' => 'required',
-            'tes_standard' => 'required',
-            'dokumen' => 'required',
-            'lainnya' => 'required',
-            'status_tampil' => 'required'
+            'id_kategori' => 'nullable',
+            'tanggal_registrasi' => 'nullable',
+            'deadline' => 'nullable',
+            'judul' => 'nullable',
+            'deskripsi' => 'nullable',
+            'jurusan' => 'nullable',
+            'jenis_beasiswa' => 'nullable',
+            'keuntungan' => 'nullable',
+            'umur' => 'nullable',
+            'gpa' => 'nullable',
+            'tes_english' => 'nullable',
+            'tes_bahasa_lain' => 'nullable',
+            'tes_standard' => 'nullable',
+            'dokumen' => 'nullable',
+            'lainnya' => 'nullable',
+            'status_tampil' => 'nullable'
         ]);
 
         $kalenderBeasiswa = kalender_beasiswa::findOrFail($id);

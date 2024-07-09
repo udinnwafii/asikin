@@ -43,7 +43,7 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Modal User</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Tambah User</h5>
                                             <button type="button" class="close" data-dismiss="modal"
                                                 aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
@@ -53,9 +53,9 @@
                                             <form action="{{ route('user.store') }}" method="post">
                                                 @csrf
                                                 <div class="form-group">
-                                                    <label for="name">Nama</label>
+                                                    <label for="nama">Nama</label>
                                                     <input type="text" name="nama" class="form-control"
-                                                        id="name" required>
+                                                        id="nama" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="email">Email</label>
@@ -92,11 +92,12 @@
                                                     <input type="date" name="tanggal_lahir" class="form-control"
                                                         id="tanggal_lahir">
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button type="submit"  class="btn btn-warning">Simpan</button>
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                </form>
-                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Simpan</button>
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -160,4 +161,66 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+
+{{-- Edit Modals --}}
+@foreach ($data as $item)
+<div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel{{ $item->id }}"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel{{ $item->id }}">Update User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('user.update', $item->id) }}" method="post">
+                    @csrf
+                    @method('PUT')
+                    <div class="form-group">
+                        <label for="nama">Nama</label>
+                        <input type="text" name="nama" class="form-control" id="nama"
+                            value="{{ $item->nama }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" class="form-control" id="email"
+                            value="{{ $item->email }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_level_user">Level User</label>
+                        <select class="form-control" name="id_level_user">
+                            <option value="">Pilih Level User</option>
+                            @foreach ($level_user as $i)
+                            <option value="{{ $i->id }}" {{ $i->id == $item->id_level_user ? 'selected' : '' }}>
+                                {{ $i->nama }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="nomer_telepon">Nomer Telepon</label>
+                        <input type="text" name="nomer_telepon" class="form-control" id="nomer_telepon"
+                            value="{{ $item->nomer_telepon }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="alamat">Alamat</label>
+                        <textarea name="alamat" class="form-control"
+                            id="alamat">{{ $item->alamat }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="tanggal_lahir">Tanggal Lahir</label>
+                        <input type="date" name="tanggal_lahir" class="form-control" id="tanggal_lahir"
+                            value="{{ $item->tanggal_lahir }}">
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
 @endsection

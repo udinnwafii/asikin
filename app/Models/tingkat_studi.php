@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class tingkat_studi extends Model
 {
     use HasFactory;
+    
     protected $fillable = ['nama'];
 
-    public function kategori()
+    public function kalenderBeasiswa()
     {
-        return $this->hasMany(kategori::class, 'id_kategori', 'id');
+        return $this->belongsToMany(kalender_beasiswa::class, 'kalender_beasiswa_tingkat_studi', 'tingkat_studi_id', 'kalender_beasiswa_id')->withTimestamps();
     }
 }

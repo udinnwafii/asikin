@@ -32,7 +32,8 @@ return new class extends Migration
             $table->enum('status_tampil',['1','0'] );
             $table->timestamps();
 
-            $table->foreign('id_kategori')->references('id')->on('kategoris');
+            $table->foreign('id_tingkat_studi')->references('id')->on('tingkat_studis');
+            $table->foreign('id_negara')->references('id')->on('negaras');
             $table->foreign('id_user')->references('id')->on('users');
         });
     }

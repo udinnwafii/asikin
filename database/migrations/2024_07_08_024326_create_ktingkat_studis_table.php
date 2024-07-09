@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('negaras', function (Blueprint $table) {
+        Schema::create('ktingkat_studis', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_benua');
-            $table->string('nama');
+            $table->unsignedBigInteger('id_kbeasiswa');
+            $table->unsignedBigInteger('id_tingkat_studi');
             $table->timestamps();
-            $table->foreign('id_benua')->references('id')->on('benuas');
-            // 
+
+            $table->foreign('id_kbeasiswa')->references('id')->on('kalender_beasiswas');
+            $table->foreign('id_tingkat_studi')->references('id')->on('tingkat_studis');
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('negaras');
+        Schema::dropIfExists('ktingkat_studis');
     }
 };

@@ -10,8 +10,6 @@ class kalender_beasiswa extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id_kategori',
-        'id_user',
         'tanggal_registrasi',
         'deadline',
         'judul',
@@ -29,13 +27,18 @@ class kalender_beasiswa extends Model
         'status_tampil'
     ];
 
-    public function kategori()
+    public function negara()
     {
-        return $this->belongsTo(Kategori::class, 'id_kategori');
+        return $this->belongsToMany(Negara::class, 'knegaras', 'id_kbeasiswa', 'id_negara');
     }
 
-    public function user()
+    public function tingkat_studi()
     {
-        return $this->belongsTo(User::class, 'id_user');
+        return $this->belongsToMany(tingkat_studi::class, 'ktingkat_studis', 'id_kbeasiswa', 'id_tingkat_studi');
     }
+
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class, 'id_user', 'id');
+    // }
 }

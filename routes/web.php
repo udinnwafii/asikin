@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BenuaController;
+use App\Http\Controllers\Frontend;
 use App\Http\Controllers\KalenderBeasiswaController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LevelUserController;
@@ -21,13 +22,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('frontend.homepage');
 });
 Route::resource('kalender_beasiswa', KalenderBeasiswaController::class);
-Route::resource('kategori', KategoriController::class);
 Route::resource('tingkat_studi', TingkatStudiController::class);
 Route::resource('user', UserController::class);
 Route::resource('level_user', LevelUserController::class);
 Route::resource('negara', NegaraController::class);
 Route::resource('benua', BenuaController::class);
+
+Route::get('frontend', [Frontend::class, 'homepage'])->name('homepage');
 
