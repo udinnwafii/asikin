@@ -72,13 +72,6 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href=" {{ Route('kategori.index') }} "
-                            class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Kategori</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a href=" {{ Route('tingkat_studi.index') }} "
                             class="nav-link">
                             <i class="far fa-circle nav-icon"></i>

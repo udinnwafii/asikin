@@ -32,9 +32,10 @@
                 <div class="container">
                     <div class="hero-inner">
 						<div class="hero-copy">
-	                        <h1 class="hero-title mt-0">Kalender Beasiswa</h1>
-	                        <p class="hero-paragraph">Lihat Kalender Beasiswa Terlengkap</p>
-	                        <div class="hero-cta"><a class="button button-primary" href="#">Lihat Sekarang</a><a class="button" href="#">Lihat Nanti</a></div>
+                        <h1 class="hero-title mt-0">Kalender Beasiswa</h1>
+                        <p class="hero-paragraph">Lihat Kalender Beasiswa Terlengkap</p>
+                        <div class="hero-cta"><a class="button button-primary" href="{{ route('kalender_beasiswa.index') }}">Dashboard</a>
+                        <a class="button" href="#">Lihat Nanti</a></div>
 						</div>
 						<div class="hero-figure anime-element">
 							<svg class="placeholder" width="528" height="396" viewBox="0 0 528 396">

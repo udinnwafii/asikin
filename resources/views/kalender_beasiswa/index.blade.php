@@ -57,7 +57,7 @@ $no = 1;
                         <h1>Kategori</h1>
 
                         <div>
-                            <label for="">Negara</label>
+                            <label for="option_negara">Negara</label>
                             <select class="form-control" name="id_negara[]" id="option_negara" multiple>
                                 @foreach ($negara as $i)
                                     <option value="{{ $i->id }}">{{ $i->nama }}</option>
@@ -168,8 +168,8 @@ $no = 1;
             @foreach ($data as $item)
                 <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{ $item->tingkat_studi->nama }}</td>
-                    <td>{{ $item->negara->nama }}</td>
+                    <td> @foreach ($item->tingkat_studi as $tingkat) {{ $tingkat->nama }}<br> @endforeach </td>
+                    <td> @foreach ($item->negara as $neg){{ $neg->nama }}<br>@endforeach </td>
                     {{-- <td>{{ $item->user->nama }}</td> --}}
                     <td>{{ $item->tanggal_registrasi }}</td>
                     <td>{{ $item->deadline }}</td>
@@ -197,6 +197,7 @@ $no = 1;
                             <!-- Delete Button -->
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
+                        
                     </td>
                 </tr>
             @endforeach

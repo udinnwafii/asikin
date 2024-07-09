@@ -10,7 +10,7 @@ class knegara extends Model
     use HasFactory;
     protected $fillable = ['id_kbeasiswa', 'id_negara'];
 
-    public function kalenderBeasiswa()
+    public function kalender_beasiswa()
     {
         return $this->belongsTo(kalender_beasiswa::class, 'id_kbeasiswa', 'id');
     }
