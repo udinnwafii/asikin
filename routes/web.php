@@ -32,4 +32,4 @@ Route::resource('negara', NegaraController::class);
 Route::resource('benua', BenuaController::class);
 
 Route::get('frontend', [Frontend::class, 'homepage'])->name('homepage');
-
+Route::get('/soft-deleted-kalender-beasiswa', [KalenderBeasiswaController::class, 'softDeleted'])->name('softDeleted');

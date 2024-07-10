@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class kalender_beasiswa extends Model
 {
@@ -35,6 +36,24 @@ class kalender_beasiswa extends Model
     public function tingkat_studi()
     {
         return $this->belongsToMany(tingkat_studi::class, 'ktingkat_studis', 'id_kbeasiswa', 'id_tingkat_studi');
+    }
+
+    use SoftDeletes;
+    protected $tables = 'kalender_beasiswas';
+    protected $dates = ['deleted_at'];
+    protected $softDeleteDays = 30; // Custom time limit for soft delete
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($model) {
+            if (! $model->forceDeleting) {
+                $model->deleted_at = $model->freshTimestamp()->addDays($model->softDeleteDays);
+                $model->save();
+                return false;
+            }
+        });
     }
 
     // public function user()

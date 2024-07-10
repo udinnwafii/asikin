@@ -6,6 +6,7 @@ use App\Models\kalender_beasiswa;
 use App\Models\negara;
 use App\Models\tingkat_studi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class KalenderBeasiswaController extends Controller
 {
@@ -79,22 +80,23 @@ class KalenderBeasiswaController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit($id)
-{
-    $kalenderBeasiswa = kalender_beasiswa::with('negara', 'tingkat_studi')->findOrFail($id);
-    $negara = negara::all();
-    $tingkat_studi = tingkat_studi::all();
+    {
+        $data = kalender_beasiswa::with('negara', 'tingkat_studi')->findOrFail($id);
+        $negara = negara::all();
+        $tingkat_studi = tingkat_studi::all();
 
-    return view('kalender_beasiswa.edit', compact('kalenderBeasiswa', 'negara', 'tingkat_studi'));
-}
+        return view('kalender_beasiswa.edit', compact('data', 'negara', 'tingkat_studi'));
+    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
     {
+        // Validate the incoming request data
         $validatedData = $request->validate([
-            'id_negara' => 'nullable|array',
-            'id_tingkat_studi' => 'nullable|array',
+            'id_negara' => 'nullable',
+            'id_tingkat_studi' => 'nullable',
             'tanggal_registrasi' => 'nullable',
             'deadline' => 'nullable',
             'judul' => 'nullable',
@@ -112,10 +114,13 @@ class KalenderBeasiswaController extends Controller
             'status_tampil' => 'nullable'
         ]);
 
+        // Find the specific Kalender Beasiswa record by ID
         $kalenderBeasiswa = kalender_beasiswa::findOrFail($id);
+
+        // Update the Kalender Beasiswa record with validated data
         $kalenderBeasiswa->update($validatedData);
 
-        // Sync pivot tables for negara and tingkat_studi
+        // Sync the pivot tables for negara and tingkat_studi
         if ($request->has('id_negara')) {
             $kalenderBeasiswa->negara()->sync($request->id_negara);
         } else {
@@ -128,17 +133,35 @@ class KalenderBeasiswaController extends Controller
             $kalenderBeasiswa->tingkat_studi()->detach();
         }
 
+        // Redirect back to the index route with a success message
         return redirect()->route('kalender_beasiswa.index')->with('success', 'Kalender Beasiswa updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $kalenderBeasiswa = kalender_beasiswa::findOrFail($id);
-        $kalenderBeasiswa->delete();
+        try {
+            $kalenderBeasiswa = kalender_beasiswa::findOrFail($id);
 
-        return redirect()->route('kalender_beasiswa.index')->with('success', 'Kalender Beasiswa deleted successfully.');
+            // Detach related records from pivot tables
+            $kalenderBeasiswa->negara()->detach();
+            $kalenderBeasiswa->tingkat_studi()->detach();
+
+            // Soft delete the main kalender_beasiswa record
+            $kalenderBeasiswa->delete();
+
+            return redirect()->route('kalender_beasiswa.index')->with('success', 'Kalender Beasiswa deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('kalender_beasiswa.index')->with('error', 'Failed to delete Kalender Beasiswa.');
+        }
+    }
+
+    public function softDeleted()
+    {
+        $softDeletedKalenderBeasiswa = kalender_beasiswa::onlyTrashed()->get();
+
+        return view('kalender_beasiswa.soft_delete', compact('softDeletedKalenderBeasiswa'));
     }
 }
