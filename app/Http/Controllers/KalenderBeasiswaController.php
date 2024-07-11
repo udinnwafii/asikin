@@ -6,12 +6,12 @@ use App\Models\kalender_beasiswa;
 use App\Models\negara;
 use App\Models\tingkat_studi;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class KalenderBeasiswaController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * Retrieves all scholarship calendars with related countries and study levels.
      */
     public function index()
     {
@@ -23,6 +23,7 @@ class KalenderBeasiswaController extends Controller
 
     /**
      * Show the form for creating a new resource.
+     * No specific implementation as creating is handled directly in store().
      */
     public function create()
     {
@@ -31,12 +32,11 @@ class KalenderBeasiswaController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * Validates and stores a new scholarship calendar entry.
      */
     public function store(Request $request)
     {
-        // Debugging line to see the incoming request data
-        // dd($request->all());
-
+        // Validation rules for incoming request data
         $validatedData = $request->validate([
             'tanggal_registrasi' => 'nullable',
             'deadline' => 'nullable',
@@ -55,12 +55,15 @@ class KalenderBeasiswaController extends Controller
             'status_tampil' => 'nullable'
         ]);
 
+        // Create a new kalender_beasiswa record with validated data
         $kalenderBeasiswa = kalender_beasiswa::create($validatedData);
 
+        // Attach related Negara models if specified
         if ($request->has('id_negara')) {
             $kalenderBeasiswa->negara()->attach($request->id_negara);
         }
 
+        // Attach related Tingkat Studi models if specified
         if ($request->has('id_tingkat_studi')) {
             $kalenderBeasiswa->tingkat_studi()->attach($request->id_tingkat_studi);
         }
@@ -68,8 +71,10 @@ class KalenderBeasiswaController extends Controller
         return redirect()->route('kalender_beasiswa.index')->with('success', 'Kalender Beasiswa created successfully.');
     }
 
+
     /**
      * Display the specified resource.
+     * No specific implementation as showing is not currently utilized.
      */
     public function show(string $id)
     {
@@ -78,6 +83,7 @@ class KalenderBeasiswaController extends Controller
 
     /**
      * Show the form for editing the specified resource.
+     * Retrieves data for editing a specific scholarship calendar entry.
      */
     public function edit($id)
     {
@@ -90,10 +96,11 @@ class KalenderBeasiswaController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * Validates and updates an existing scholarship calendar entry.
      */
     public function update(Request $request, $id)
     {
-        // Validate the incoming request data
+        // Validation rules for incoming request data
         $validatedData = $request->validate([
             'id_negara' => 'nullable',
             'id_tingkat_studi' => 'nullable',
@@ -120,7 +127,7 @@ class KalenderBeasiswaController extends Controller
         // Update the Kalender Beasiswa record with validated data
         $kalenderBeasiswa->update($validatedData);
 
-        // Sync the pivot tables for negara and tingkat_studi
+        // Sync the pivot tables for negara and tingkat_studi based on request data
         if ($request->has('id_negara')) {
             $kalenderBeasiswa->negara()->sync($request->id_negara);
         } else {
@@ -139,6 +146,7 @@ class KalenderBeasiswaController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * Deletes a scholarship calendar entry and detaches related records.
      */
     public function destroy($id)
     {
@@ -158,10 +166,14 @@ class KalenderBeasiswaController extends Controller
         }
     }
 
-    public function softDeleted()
+    /**
+     * Display a listing of soft deleted resources.
+     * Retrieves all soft deleted scholarship calendars.
+     */
+    public function soft_delete()
     {
-        $softDeletedKalenderBeasiswa = kalender_beasiswa::onlyTrashed()->get();
+        $trash = kalender_beasiswa::onlyTrashed()->get();
 
-        return view('kalender_beasiswa.soft_delete', compact('softDeletedKalenderBeasiswa'));
+        return view('kalender_beasiswa.soft_delete', compact('trash'));
     }
 }

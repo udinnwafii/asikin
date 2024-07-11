@@ -12,7 +12,10 @@ class tingkat_studi extends Model
     protected $fillable = ['nama'];
 
     public function kalender_beasiswa()
-    {
-        return $this->belongsToMany(kalender_beasiswa::class, 'ktingkat_studis', 'id_tingkat_studi', 'id_kbeasiswa');
-    }
+{
+    return $this->belongsToMany(kalender_beasiswa::class, 'ktingkat_studis', 'id_tingkat_studi', 'id_kbeasiswa')
+                ->withPivot('deleted_at')
+                ->withTimestamps()
+                ->using(tingkat_studi::class); // Ensure using the correct pivot model
+}
 }

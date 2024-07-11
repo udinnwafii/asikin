@@ -18,9 +18,6 @@
 </div>
 </div><!-- /.container-fluid -->
 </section>
-@php
-$no = 1;
-@endphp
 <!-- Main content -->
 <section class="content">
 <div class="container-fluid">
@@ -32,11 +29,10 @@ $no = 1;
 </div>
 <!-- /.card-header -->
 <div class="card-body">
-<!--Button To Page Soft Delete-->
-<a href="{{ route('softDeleted') }}" type="button" class="btn btn-warning ml-auto">Lihat Soft Delete</a>
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal"
-data-target="#TambahKalenderBeasiswa">Tambah Kalender</button>
+<button type="button" class="btn btn-primary" data-toggle="modal"data-target="#TambahKalenderBeasiswa">Tambah Kalender</button>
+<!--Button To Page Soft Delete-->
+<a href="{{ route('soft_delete') }}" type="button" class="btn btn-warning ml-auto">Lihat Soft Delete</a>
 <!-- Modal -->
 <div class="modal fade" id="TambahKalenderBeasiswa" tabindex="-1"
 aria-labelledby="Tambah Kalender Beasiswa" aria-hidden="true">
@@ -56,18 +52,15 @@ aria-label="Close">
 <h1>Kategori</h1>
 <div>
     <label for="option_negara">Negara</label>
-    <select class="form-control" name="id_negara[]"
-        id="option_negara" multiple>
+    <select class="form-control" name="id_negara[]" id="option_negara" multiple required>
         @foreach ($negara as $i)
-            <option value="{{ $i->id }}">{{ $i->nama }}
-            </option>
+            <option value="{{ $i->id }}">{{ $i->nama }}</option>
         @endforeach
     </select>
 </div>
 <div>
     <label for="option_tingkat_studi">Tingkat Studi</label>
-    <select class="form-control" name="id_tingkat_studi[]"
-        id="option_tingkat_studi" multiple>
+    <select class="form-control" name="id_tingkat_studi[]" id="option_tingkat_studi" multiple required>
         @foreach ($tingkat_studi as $i)
             <option value="{{ $i->id }}">{{ $i->nama }}
             </option>
@@ -77,18 +70,17 @@ aria-label="Close">
 <br>
 <h1>Tentang</h1>
 <label for="tanggal_registrasi">Tanggal Registrasi</label>
-<input type="date" class="form-control"
-    name="tanggal_registrasi">
+<input type="date" class="form-control" name="tanggal_registrasi" required>
 <label for="deadline">Deadline</label>
-<input type="date" class="form-control" name="deadline">
+<input type="date" class="form-control" name="deadline" required>
 <label for="judul">Judul</label>
-<input type="text" class="form-control" name="judul">
+<input type="text" class="form-control" name="judul" required>
 <label for="deskripsi">Deskripsi</label>
-<textarea name="deskripsi" class="form-control" cols="15" rows="10"></textarea>
+<textarea name="deskripsi" class="form-control" cols="15" rows="10" required></textarea>
 <label for="jurusan">Jurusan</label>
-<input type="text" class="form-control" name="jurusan">
+<input type="text" class="form-control" name="jurusan" required>
 <label for="jenis_beasiswa">Jenis Beasiswa</label>
-<select name="jenis_beasiswa" class="form-control">
+<select name="jenis_beasiswa" class="form-control" required>
     <option value="">Pilih Jenis Beasiswa</option>
     <option value="full">Full</option>
     <option value="partial">Partial</option>
@@ -96,25 +88,25 @@ aria-label="Close">
 <br>
 <h1>Keuntungan</h1>
 <label for="keuntungan">Keuntungan</label>
-<textarea name="keuntungan" class="form-control" cols="15" rows="10"></textarea>
+<textarea name="keuntungan" class="form-control" cols="15" rows="10" required></textarea>
 <br>
 <h1>Persyaratan</h1>
 <label for="umur">Umur</label>
-<input type="text" class="form-control" name="umur">
+<input type="text" class="form-control" name="umur" required>
 <label for="gpa">GPA</label>
-<input type="text" class="form-control" name="gpa">
+<input type="text" class="form-control" name="gpa" required>
 <label for="tes_english">Tes English</label>
-<input type="text" class="form-control" name="tes_english">
+<input type="text" class="form-control" name="tes_english" required>
 <label for="tes_bahasa_lain">Tes Bahasa Lain</label>
-<input type="text" class="form-control" name="tes_bahasa_lain">
+<input type="text" class="form-control" name="tes_bahasa_lain" required>
 <label for="tes_standard">Tes Standard</label>
-<input type="text" class="form-control" name="tes_standard">
+<input type="text" class="form-control" name="tes_standard" required>
 <label for="dokumen">Dokumen</label>
-<input type="text" class="form-control" name="dokumen">
+<input type="text" class="form-control" name="dokumen" required>
 <label for="lainnya">Lainnya</label>
-<input type="text" class="form-control" name="lainnya">
+<input type="text" class="form-control" name="lainnya" required>
 <label for="status_tampil">Status Tampil</label>
-<select name="status_tampil" class="form-control">
+<select name="status_tampil" class="form-control" required>
     <option value="">Pilih Status Tampil</option>
     <option value="1">Tampil</option>
     <option value="0">Tidak Tampil</option>
@@ -136,6 +128,7 @@ new MultiSelectTag('option_tingkat_studi'); // id
 </div>
 </div>
 <div class="table-responsive">
+@php $no = 1; @endphp
 <table id="example2" class="table table-bordered table-hover">
 <thead>
 <tr>
@@ -164,14 +157,10 @@ new MultiSelectTag('option_tingkat_studi'); // id
 <tr>
 <td>{{ $no++ }}</td>
 <td>
-@foreach ($item->tingkat_studi as $tingkat)
-    {{ $tingkat->nama }}<br>
-@endforeach
+@foreach ($item->tingkat_studi as $tingkat) {{ $tingkat->nama }}<br> @endforeach
 </td>
 <td>
-@foreach ($item->negara as $neg)
-    {{ $neg->nama }}<br>
-@endforeach
+@foreach ($item->negara as $neg) {{ $neg->nama }}<br> @endforeach
 </td>
 <td>{{ date('d-m-Y', strtotime($item->tanggal_registrasi)) }}</td>
 <td>{{ date('d-m-Y', strtotime($item->deadline)) }}</td>
@@ -197,9 +186,7 @@ new MultiSelectTag('option_tingkat_studi'); // id
         data-target="#EditKalenderBeasiswa{{ $item->id }}"
         class="btn btn-warning">Update</a>
     <!-- Delete Button -->
-    <a data-toggle="modal"
-        data-target="#DeleteKalenderBeasiswa{{ $item->id }}"
-        class="btn btn-danger">Delete</a>
+    <a data-toggle="modal" data-target="#DeleteKalenderBeasiswa{{ $item->id }}" class="btn btn-danger">Delete</a>
 </form>
 </td>
 </tr>
@@ -229,21 +216,15 @@ aria-hidden="true">
                     <label
                         for="option_negara_{{ $item->id }}">Negara</label>
                     <select class="form-control"
-                        name="id_negara[]"
-                        id="option_negara_{{ $item->id }}"
-                        multiple>
-                        @foreach ($negara as $i)
+                        name="id_negara[]" id="option_negara_{{ $item->id }}" multiple> @foreach ($negara as $i)
                             <option value="{{ $i->id }}"
-                                {{ in_array($i->id, $item->negara->pluck('id')->toArray()) ? 'selected' : '' }}>
-                                {{ $i->nama }}
-                            </option>
+                        {{ in_array($i->id, $item->negara->pluck('id')->toArray()) ? 'selected' : '' }}>{{ $i->nama }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div>
                     <label
-                        for="option_tingkat_studi_{{ $item->id }}">Tingkat
-                        Studi</label>
+                        for="option_tingkat_studi_{{ $item->id }}">Tingkat Studi</label>
                     <select class="form-control"
                         name="id_tingkat_studi[]"
                         id="option_tingkat_studi_{{ $item->id }}"
@@ -322,20 +303,15 @@ aria-hidden="true">
                 <select name="status_tampil" class="form-control">
                     <option value="">Pilih Status Tampil
                     </option>
-                    <option value="1"
-                        {{ $item->status_tampil == '1' ? 'selected' : '' }}>
-                        Tampil</option>
-                    <option value="0"
-                        {{ $item->status_tampil == '0' ? 'selected' : '' }}>
-                        Tidak Tampil</option>
+                    <option value="1"{{ $item->status_tampil == '1' ? 'selected' : '' }}>Tampil</option>
+                    <option value="0"{{ $item->status_tampil == '0' ? 'selected' : '' }}>Tidak Tampil</option>
                 </select>
             </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary"
                 data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save
-                changes</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
         </div>
         <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.0.1/dist/js/multi-select-tag.js"></script>
         <script>
@@ -353,15 +329,14 @@ aria-hidden="true">
 <div class="modal-dialog">
 <div class="modal-content">
     <div class="modal-header">
-        <h5 class="modal-title" id="DeleteKalenderBeasiswa">Delete
-            Beasiswa</h5>
+        <h5 class="modal-title" id="DeleteKalenderBeasiswa">Delete Beasiswa</h5>
         <button type="button" class="close"
             data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
-        Are you sure you want to delete this record?
+        Data Ini Akan di Simpan Di Soft Delete Selama 30 Hari!
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary"
