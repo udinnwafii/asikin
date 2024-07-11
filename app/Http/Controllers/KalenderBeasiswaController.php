@@ -148,23 +148,33 @@ class KalenderBeasiswaController extends Controller
      * Remove the specified resource from storage.
      * Deletes a scholarship calendar entry and detaches related records.
      */
+    // public function destroy($id)
+    // {
+    //     try {
+    //         $kalenderBeasiswa = kalender_beasiswa::findOrFail($id);
+
+    //         // Soft delete the main kalender_beasiswa record
+    //         $kalenderBeasiswa->delete();
+
+    //         return redirect()->route('kalender_beasiswa.index')->with('success', 'Kalender Beasiswa deleted successfully.');
+    //     } catch (\Exception $e) {
+    //         return redirect()->route('kalender_beasiswa.index')->with('error', 'Failed to delete Kalender Beasiswa.');
+    //     }
+    // }
+
     public function destroy($id)
-    {
-        try {
-            $kalenderBeasiswa = kalender_beasiswa::findOrFail($id);
+{
+    try {
+        $kalenderBeasiswa = kalender_beasiswa::findOrFail($id);
 
-            // Detach related records from pivot tables
-            $kalenderBeasiswa->negara()->detach();
-            $kalenderBeasiswa->tingkat_studi()->detach();
+        // Soft delete the main kalender_beasiswa record
+        $kalenderBeasiswa->delete();
 
-            // Soft delete the main kalender_beasiswa record
-            $kalenderBeasiswa->delete();
-
-            return redirect()->route('kalender_beasiswa.index')->with('success', 'Kalender Beasiswa deleted successfully.');
-        } catch (\Exception $e) {
-            return redirect()->route('kalender_beasiswa.index')->with('error', 'Failed to delete Kalender Beasiswa.');
-        }
+        return redirect()->route('kalender_beasiswa.index')->with('success', 'Kalender Beasiswa deleted successfully.');
+    } catch (\Exception $e) {
+        return redirect()->route('kalender_beasiswa.index')->with('error', 'Failed to delete Kalender Beasiswa.');
     }
+}
 
     /**
      * Display a listing of soft deleted resources.

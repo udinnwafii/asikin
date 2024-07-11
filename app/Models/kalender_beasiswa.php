@@ -5,18 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class kalender_beasiswa extends Model
 {
-    use HasFactory; // Enables usage of Eloquent's factory methods for this model
+    use HasFactory;
+    use SoftDeletes;
 
-    use SoftDeletes; // Enables soft deletes for this model
+    protected $table = 'kalender_beasiswas';
+    protected $dates = ['deleted_at'];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'tanggal_registrasi',
         'deadline',
@@ -36,55 +34,13 @@ class kalender_beasiswa extends Model
     ];
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'kalender_beasiswas'; // Specifies the table name
-
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = ['deleted_at']; // Specifies the column to use for soft deletes
-
-    /**
-     * Custom time limit for soft delete.
-     *
-     * @var int
-     */
-    protected $softDeleteDays = 30;
-
-    /**
-     * Boot function for the model.
-     *
-     * @return void
-     */
-    public static function boot()
-    {
-        parent::boot();
-
-        // Event listener for deleting event
-        static::deleting(function ($model) {
-            // Check if not force deleting (soft delete scenario)
-            if (! $model->forceDeleting) {
-                // Sets a custom deletion timestamp based on softDeleteDays
-                $model->deleted_at = $model->freshTimestamp()->addDays($model->softDeleteDays);
-                $model->save(); // Saves the model with the updated deletion timestamp
-                return false; // Prevents the model from being actually deleted from the database
-            }
-        });
-    }
-
-    /**
      * Define the relationship with Negara (Country) model.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function negara()
     {
-        return $this->belongsToMany(Negara::class, 'knegaras', 'id_kbeasiswa', 'id_negara');
+        return $this->belongsToMany(Negara::class, 'knegaras', 'id_kbeasiswa', 'id_negara')->withPivot('deleted_at')->withTimestamps();
     }
 
     /**
@@ -94,12 +50,48 @@ class kalender_beasiswa extends Model
      */
     public function tingkat_studi()
     {
-        return $this->belongsToMany(tingkat_studi::class, 'ktingkat_studis', 'id_kbeasiswa', 'id_tingkat_studi');
+        return $this->belongsToMany(tingkat_studi::class, 'ktingkat_studis', 'id_kbeasiswa', 'id_tingkat_studi')->withPivot('deleted_at')->withTimestamps();
+    }
+    /**
+     * Boot function for the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        parent::boot();
+
+        static::deleting(function ($model) {
+            if (! $model->forceDeleting) {
+                // Soft delete related pivot records
+                DB::table('knegaras')
+                    ->where('id_kbeasiswa', $model->id)
+                    ->update(['deleted_at' => now()]);
+
+                DB::table('ktingkat_studis')
+                    ->where('id_kbeasiswa', $model->id)
+                    ->update(['deleted_at' => now()]);
+
+                // Soft delete the main model
+                $model->deleted_at = $model->freshTimestamp();
+                $model->save();
+
+                return false; // Prevents the model from being actually deleted from the database
+            }
+        });
+
+        // static::restoring(function ($model) {
+        //     // Restore related pivot records
+        //     DB::table('knegaras')
+        //         ->where('id_kbeasiswa', $model->id)
+        //         ->update(['deleted_at' => null]);
+
+        //     DB::table('ktingkat_studis')
+        //         ->where('id_kbeasiswa', $model->id)
+        //         ->update(['deleted_at' => null]);
+        // });
     }
 
-    // Uncomment and implement if needed: Establishes a belongsTo relationship with User model
-    // public function user()
-    // {
-    //     return $this->belongsTo(User::class, 'id_user', 'id');
-    // }
 }
