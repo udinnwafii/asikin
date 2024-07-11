@@ -82,16 +82,16 @@ class kalender_beasiswa extends Model
             }
         });
 
-        // static::restoring(function ($model) {
-        //     // Restore related pivot records
-        //     DB::table('knegaras')
-        //         ->where('id_kbeasiswa', $model->id)
-        //         ->update(['deleted_at' => null]);
+        static::restoring(function ($model) {
+            // Restore related pivot records
+            DB::table('knegaras')
+                ->where('id_kbeasiswa', $model->id)
+                ->update(['deleted_at' => null]);
 
-        //     DB::table('ktingkat_studis')
-        //         ->where('id_kbeasiswa', $model->id)
-        //         ->update(['deleted_at' => null]);
-        // });
+            DB::table('ktingkat_studis')
+                ->where('id_kbeasiswa', $model->id)
+                ->update(['deleted_at' => null]);
+        });
     }
 
 }

@@ -51,6 +51,7 @@
                                         <th>Status Tampil</th>
                                         <th>Tanggal Di Hapus</th>
                                         <th>Sisa Waktu</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -83,6 +84,11 @@
                                             <td>{{ $item->status_tampil }}</td>
                                             <td>{{ $item->deleted_at->format('d-m-Y H:i:s') }}</td>
                                             <td>{{ $item->deleted_at->addDays(30)->diffForHumans(null, true) }}</td>
+                                            <td> <form action="{{ route('restore', $item->id) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="btn btn-success">Restore</button>
+                                            </form>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

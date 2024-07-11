@@ -186,4 +186,17 @@ class KalenderBeasiswaController extends Controller
 
         return view('kalender_beasiswa.soft_delete', compact('trash'));
     }
+    public function restore($id)
+{
+    try {
+        $kalenderBeasiswa = kalender_beasiswa::withTrashed()->findOrFail($id);
+
+        // Restore the main kalender_beasiswa record
+        $kalenderBeasiswa->restore();
+
+        return redirect()->route('kalender_beasiswa.index')->with('success', 'Kalender Beasiswa restored successfully.');
+    } catch (\Exception $e) {
+        return redirect()->route('kalender_beasiswa.index')->with('error', 'Failed to restore Kalender Beasiswa.');
+    }
+}
 }
