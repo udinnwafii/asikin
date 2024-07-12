@@ -34,4 +34,4 @@ Route::resource('benua', BenuaController::class);
 Route::get('frontend', [Frontend::class, 'homepage'])->name('homepage');
 Route::get('soft_delete', [KalenderBeasiswaController::class, 'soft_delete'])->name('soft_delete');
 Route::post('kalender-beasiswa/restore/{id}', [KalenderBeasiswaController::class, 'restore'])->name('restore');
-// Route::delete('kalender_beasiswa/force_delete/{id}', [KalenderBeasiswaController::class, 'force_delete'])->name('force_delete');
+Route::delete('kalender_beasiswa/force_delete/{id}', [KalenderBeasiswaController::class, 'force_delete'])->name('force_delete');

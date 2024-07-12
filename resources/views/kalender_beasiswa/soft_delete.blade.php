@@ -1,5 +1,3 @@
-<!-- resources/views/soft_delete.blade.php -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +9,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-    <!-- DataTables -->
+    <!-- DataTables CSS -->
     <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
@@ -84,10 +82,18 @@
                                             <td>{{ $item->status_tampil }}</td>
                                             <td>{{ $item->deleted_at->format('d-m-Y H:i:s') }}</td>
                                             <td>{{ $item->deleted_at->addDays(30)->diffForHumans(null, true) }}</td>
-                                            <td> <form action="{{ route('restore', $item->id) }}" method="POST">
-                                                @csrf
-                                                <button type="submit" class="btn btn-success">Restore</button>
-                                            </form>
+                                            <td>
+                                                <form action="{{ route('restore', $item->id) }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-success">Restore</button>
+                                                </form>
+                                                <form action="{{ route('force_delete', $item->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger"
+                                                        onclick="return confirm('Are you sure you want to permanently delete this record?')">Permanent
+                                                        Delete</button>
+                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -97,7 +103,8 @@
                     </div>
 
                     <div class="card-footer">
-                        <a href="{{ route('kalender_beasiswa.index') }}" class="btn btn-primary">Back to Kalender Beasiswa</a>
+                        <a href="{{ route('kalender_beasiswa.index') }}" class="btn btn-primary">Back to Kalender
+                            Beasiswa</a>
                     </div>
                 </div>
             </div>
@@ -123,7 +130,7 @@
     <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 
     <script>
-        $(function() {
+        $(document).ready(function() {
             $('#example2').DataTable({
                 "paging": true,
                 "lengthChange": false,

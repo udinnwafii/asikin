@@ -64,7 +64,7 @@ class kalender_beasiswa extends Model
         parent::boot();
 
         static::deleting(function ($model) {
-            if (! $model->forceDeleting) {
+            if (!$model->forceDeleting) {
                 // Soft delete related pivot records
                 DB::table('knegaras')
                     ->where('id_kbeasiswa', $model->id)
@@ -79,6 +79,15 @@ class kalender_beasiswa extends Model
                 $model->save();
 
                 return false; // Prevents the model from being actually deleted from the database
+            } else {
+                // Force delete related pivot records
+                DB::table('knegaras')
+                    ->where('id_kbeasiswa', $model->id)
+                    ->delete();
+
+                DB::table('ktingkat_studis')
+                    ->where('id_kbeasiswa', $model->id)
+                    ->delete();
             }
         });
 
@@ -92,6 +101,7 @@ class kalender_beasiswa extends Model
                 ->where('id_kbeasiswa', $model->id)
                 ->update(['deleted_at' => null]);
         });
-    }
 
+        
+    }
 }
