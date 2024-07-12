@@ -148,19 +148,6 @@ class KalenderBeasiswaController extends Controller
      * Remove the specified resource from storage.
      * Deletes a scholarship calendar entry and detaches related records.
      */
-    // public function destroy($id)
-    // {
-    //     try {
-    //         $kalenderBeasiswa = kalender_beasiswa::findOrFail($id);
-
-    //         // Soft delete the main kalender_beasiswa record
-    //         $kalenderBeasiswa->delete();
-
-    //         return redirect()->route('kalender_beasiswa.index')->with('success', 'Kalender Beasiswa deleted successfully.');
-    //     } catch (\Exception $e) {
-    //         return redirect()->route('kalender_beasiswa.index')->with('error', 'Failed to delete Kalender Beasiswa.');
-    //     }
-    // }
 
     public function destroy($id)
     {
@@ -210,6 +197,6 @@ class KalenderBeasiswaController extends Controller
     $kalender->forceDelete();
 
     // Redirect back with success message
-    return redirect()->route('soft_delete')->with('success', 'Kalender Beasiswa permanently deleted.');
+    return redirect()->route('kbeasiswa_soft_delete')->with('success', 'Kalender Beasiswa permanently deleted.');
 }
 }

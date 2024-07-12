@@ -32,7 +32,7 @@
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal"data-target="#TambahKalenderBeasiswa">Tambah Kalender</button>
 <!--Button To Page Soft Delete-->
-<a href="{{ route('soft_delete') }}" type="button" class="btn btn-warning ml-auto">Lihat Soft Delete</a>
+<a href="{{ route('kbeasiswa_soft_delete') }}" type="button" class="btn btn-warning ml-auto">Lihat Soft Delete</a>
 <!-- Modal -->
 <div class="modal fade" id="TambahKalenderBeasiswa" tabindex="-1"
 aria-labelledby="Tambah Kalender Beasiswa" aria-hidden="true">
@@ -185,8 +185,13 @@ new MultiSelectTag('option_tingkat_studi'); // id
     <a href="#" data-toggle="modal"
         data-target="#EditKalenderBeasiswa{{ $item->id }}"
         class="btn btn-warning">Update</a>
-    <!-- Delete Button -->
-    <a data-toggle="modal" data-target="#DeleteKalenderBeasiswa{{ $item->id }}" class="btn btn-danger">Delete</a>
+</form>
+<!-- Delete Button -->
+<form action="{{ route('kalender_beasiswa.destroy', $item->id) }}" method="POST">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="btn btn-danger"
+    onclick="return confirm('Data Ini Akan Disimpan Di Soft Delete Selama 30 Hari')">Permanent Delete</button>
 </form>
 </td>
 </tr>
@@ -319,38 +324,6 @@ aria-hidden="true">
             new MultiSelectTag('option_tingkat_studi_{{ $item->id }}'); // id
         </script>
     </form>
-</div>
-</div>
-</div>
-<!-- Delete Modal -->
-<div class="modal fade" id="DeleteKalenderBeasiswa{{ $item->id }}"
-tabindex="-1" aria-labelledby="DeleteKalenderBeasiswa"
-aria-hidden="true">
-<div class="modal-dialog">
-<div class="modal-content">
-    <div class="modal-header">
-        <h5 class="modal-title" id="DeleteKalenderBeasiswa">Delete Beasiswa</h5>
-        <button type="button" class="close"
-            data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        Data Ini Akan di Simpan Di Soft Delete Selama 30 Hari!
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary"
-            data-dismiss="modal">Close</button>
-        <!-- Form for delete action -->
-        <form
-            action="{{ route('kalender_beasiswa.destroy', $item->id) }}"
-            method="post">
-            @csrf
-            @method('DELETE')
-            <button type="submit"
-                class="btn btn-danger">Delete</button>
-        </form>
-    </div>
 </div>
 </div>
 </div>

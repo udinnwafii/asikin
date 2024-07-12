@@ -83,16 +83,15 @@
                                             <td>{{ $item->deleted_at->format('d-m-Y H:i:s') }}</td>
                                             <td>{{ $item->deleted_at->addDays(30)->diffForHumans(null, true) }}</td>
                                             <td>
-                                                <form action="{{ route('restore', $item->id) }}" method="POST">
+                                                <form action="{{ route('kbeasiswa_restore', $item->id) }}" method="POST">
                                                     @csrf
                                                     <button type="submit" class="btn btn-success">Restore</button>
                                                 </form>
-                                                <form action="{{ route('force_delete', $item->id) }}" method="POST">
+                                                <form action="{{ route('kbeasiswa_force_delete', $item->id) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger"
-                                                        onclick="return confirm('Are you sure you want to permanently delete this record?')">Permanent
-                                                        Delete</button>
+                                                    onclick="return confirm('Yakin Untuk Menghapus Data ini Secara Permanent?')">Permanent Delete</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -103,8 +102,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <a href="{{ route('kalender_beasiswa.index') }}" class="btn btn-primary">Back to Kalender
-                            Beasiswa</a>
+                        <a href="{{ route('kalender_beasiswa.index') }}" class="btn btn-primary">Kembali Kalender Beasiswa</a>
                     </div>
                 </div>
             </div>

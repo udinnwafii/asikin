@@ -59,7 +59,6 @@ class kalender_beasiswa extends Model
      */
     protected static function boot()
     {
-        parent::boot();
 
         parent::boot();
 
