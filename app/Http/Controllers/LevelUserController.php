@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\level_user;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class LevelUserController extends Controller
@@ -21,7 +22,7 @@ class LevelUserController extends Controller
      */
     public function create()
     {
-       //
+        //
     }
 
     /**
@@ -42,7 +43,7 @@ class LevelUserController extends Controller
      */
     public function show(string $id)
     {
-      //
+        //
     }
 
     /**
@@ -58,25 +59,85 @@ class LevelUserController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-{
-    $validatedData = $request->validate([
-        'nama' => 'required',
-    ]);
+    {
+        $validatedData = $request->validate([
+            'nama' => 'required',
+        ]);
 
-    $data = level_user::findOrFail($id);
-    $data->update($validatedData);
+        $data = level_user::findOrFail($id);
+        $data->update($validatedData);
 
-    return redirect('/level_user')->with('success', 'Record updated successfully!');
-}
+        return redirect('/level_user')->with('success', 'Record updated successfully!');
+    }
 
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $data = level_user::findOrFail($id);
-        $data->delete();
-        return redirect('/level_user')->with('success', 'Record deleted successfully!');
+        try {
+            $levelUser = level_user::findOrFail($id);
+
+            // Soft delete the main level_user record
+            $levelUser->delete();
+
+            return redirect()->route('level_user.index')->with('success', 'Level user deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('level_user.index')->with('error', 'Failed to delete level user.');
+        }
+    }
+
+    /**
+     * Display a listing of soft deleted resources.
+     * Retrieves all soft deleted level_users.
+     */
+    public function soft_delete()
+    {
+        $trash = level_user::onlyTrashed()->get();
+
+        return view('level_user.soft_delete', compact('trash'));
+    }
+
+    /**
+     * Restore the soft deleted level_user record.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function restore($id)
+    {
+        try {
+            $levelUser = level_user::withTrashed()->findOrFail($id);
+
+            // Restore the main level_user record
+            $levelUser->restore();
+
+            return redirect()->route('level_user.index')->with('success', 'Level user restored successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('level_user.index')->with('error', 'Failed to restore level user.');
+        }
+    }
+
+    /**
+     * Force delete (permanently delete) the level_user record.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function force_delete($id)
+    {
+        try {
+            // Find the level_user with the given ID, including soft-deleted records
+            $levelUser = level_user::withTrashed()->findOrFail($id);
+
+            // Perform force delete
+            $levelUser->forceDelete();
+
+            // Redirect back with success message
+            return redirect()->route('level_user_soft_delete')->with('success', 'Level user permanently deleted.');
+        } catch (\Exception $e) {
+            return redirect()->route('level_user_soft_delete')->with('error', 'Failed to permanently delete level user.');
+        }
     }
 }

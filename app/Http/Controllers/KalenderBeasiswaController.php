@@ -149,6 +149,7 @@ class KalenderBeasiswaController extends Controller
      * Deletes a scholarship calendar entry and detaches related records.
      */
 
+
     public function destroy($id)
     {
         try {

@@ -82,11 +82,55 @@ class NegaraController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $negara = negara::findOrFail($id);
-        $negara->delete();
+        try {
+            $Negara= negara::findOrFail($id);
 
-        return redirect()->route('negara.index')->with('success', 'Negara deleted successfully.');
+            // Soft delete the main negara record
+            $Negara->delete();
+
+            return redirect()->route('negara.index')->with('success', 'Negara Beasiswa deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('negara.index')->with('error', 'Failed to delete Negara Beasiswa.');
+        }
     }
+
+
+    /**
+     * Display a listing of soft deleted resources.
+     * Retrieves all soft deleted scholarship calendars.
+     */
+    public function soft_delete()
+    {
+        $trash = negara::onlyTrashed()->get();
+
+        return view('negara.soft_delete', compact('trash'));
+    }
+
+    public function restore($id)
+    {
+        try {
+            $Negara= negara::withTrashed()->findOrFail($id);
+
+            // Restore the main negara record
+            $Negara->restore();
+
+            return redirect()->route('negara.index')->with('success', 'Negara  restored successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('negara.index')->with('error', 'Failed to restore Negara .');
+        }
+    }
+
+    public function force_delete($id)
+{
+    // Find the Negara with the given ID, including soft-deleted records
+    $Negara = negara::withTrashed()->findOrFail($id);
+
+    // Perform force delete
+    $Negara->forceDelete();
+
+    // Redirect back with success message
+    return redirect()->route('negara_soft_delete')->with('success', 'Negara  permanently deleted.');
+}
 }

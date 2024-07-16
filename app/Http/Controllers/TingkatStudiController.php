@@ -69,14 +69,63 @@ class TingkatStudiController extends Controller
     return redirect('/tingkat_studi')->with('success', 'Record updated successfully!');
 }
 
+public function destroy($id)
+{
+    try {
+        $tingkatStudi = tingkat_studi::findOrFail($id);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $data = tingkat_studi::findOrFail($id);
-        $data->delete();
-        return redirect('/tingkat_studi')->with('success', 'Record deleted successfully!');
+        // Soft delete the main TingkatStudi record
+        $tingkatStudi->softDeleteTingkatStudi();
+
+        return redirect()->route('tingkat_studi.index')->with('success', 'Tingkat Studi deleted successfully.');
+    } catch (\Exception $e) {
+        return redirect()->route('tingkat_studi.index')->with('error', 'Failed to delete Tingkat Studi.');
     }
+}
+
+/**
+ * Display a listing of soft deleted resources.
+ * Retrieves all soft deleted TingkatStudi records.
+ */
+public function soft_delete()
+{
+    $trash = tingkat_studi::onlyTrashed()->get();
+
+    return view('tingkat_studi.soft_delete', compact('trash'));
+}
+
+/**
+ * Restore the specified soft deleted resource.
+ */
+public function restore($id)
+{
+    try {
+        $tingkatStudi = tingkat_studi::withTrashed()->findOrFail($id);
+
+        // Restore the main TingkatStudi record
+        $tingkatStudi->restoreTingkatStudi();
+
+        return redirect()->route('tingkat_studi.index')->with('success', 'Tingkat Studi restored successfully.');
+    } catch (\Exception $e) {
+        return redirect()->route('tingkat_studi.index')->with('error', 'Failed to restore Tingkat Studi.');
+    }
+}
+
+/**
+ * Permanently delete the specified soft deleted resource.
+ */
+public function force_delete($id)
+{
+    try {
+        // Find the Tingkat Studi with the given ID, including soft-deleted records
+        $tingkatStudi = tingkat_studi::withTrashed()->findOrFail($id);
+
+        // Perform force delete
+        $tingkatStudi->forceDeleteTingkatStudi();
+
+        return redirect()->route('tingkat_studi_soft_delete')->with('success', 'Tingkat Studi permanently deleted.');
+    } catch (\Exception $e) {
+        return redirect()->route('tingkat_studi_soft_delete')->with('error', 'Failed to permanently delete Tingkat Studi.');
+    }
+}
 }

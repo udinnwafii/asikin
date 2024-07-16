@@ -74,7 +74,7 @@ class kalender_beasiswa extends Model
                     ->update(['deleted_at' => now()]);
 
                 // Soft delete the main model
-                $model->deleted_at = $model->freshTimestamp();
+                $model->deleted_at = $model->freshTimestamp()->addDays(30);
                 $model->save();
 
                 return false; // Prevents the model from being actually deleted from the database

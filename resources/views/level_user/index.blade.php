@@ -32,9 +32,9 @@
                         <!-- /.card-header -->
                         <div class="card-body">
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                Tambah Level User
-                            </button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Tambah Level User</button>
+                            <!--Button To Page Soft Delete-->
+                            <a href="{{ route('level_user_soft_delete') }}" type="button" class="btn btn-warning ml-auto">Lihat Soft Delete</a>
 
                             <!-- Modal -->
                             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -81,13 +81,13 @@
                                         <td>{{ $no++ }}</td>
                                         <td>{{ $item->nama }}</td>
                                         <td>
-                                            <form action="{{ route('level_user.destroy', $item->id) }}" method="post">
+                                            <form action="{{ route('level_user.destroy', $item->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <!-- Edit Button -->
                                                 <a href="#" data-toggle="modal" data-target="#editModal{{ $item->id }}" class="btn btn-warning">Update</a>
                                                 <!-- Delete Button -->
-                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                                <button type="submit" class="btn btn-danger" onclick="return confirm('Data Ini Akan Disimpan Di Soft Delete Selama 30 Hari')">Delete</button>
                                             </form>
                                         </td>
                                     </tr>
