@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\level_user;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -115,13 +114,84 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('kalender_beasiswa.index');
+            return redirect()->intended('/kalender_beasiswa');
         }
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ]);
     }
+
+    // public function forgot_password()
+    // {
+    //     return view('login.forgot_passsword');
+    // }
+
+    // public function send_reset_link(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'email' => 'required|email|exists:users,email',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return redirect()->back()->withErrors($validator)->withInput();
+    //     }
+
+    //     $token = Str::random(60);
+    //     $email = $request->input('email');
+
+    //     // Store the reset token in the database
+    //     DB::table('password_resets')->insert([
+    //         'email' => $email,
+    //         'token' => $token,
+    //         'created_at' => now(),
+    //     ]);
+
+    //     // Send the reset email
+    //     Mail::send('emails.password_reset', ['token' => $token], function ($message) use ($email) {
+    //         $message->to($email);
+    //         $message->subject('Password Reset Request');
+    //     });
+
+    //     return redirect()->back()->with('status', 'We have emailed your password reset link!');
+    // }
+
+    // public function recover_password()
+    // {
+    //     return view('login.recover_password');
+    // }
+
+    // public function reset_password(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'email' => 'required|email|exists:users,email',
+    //         'password' => 'required|min:8|confirmed',
+    //         'password_confirmation' => 'required',
+    //         'token' => 'required'
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return redirect()->back()->withErrors($validator)->withInput();
+    //     }
+
+    //     $passwordReset = DB::table('password_resets')->where([
+    //         ['token', $request->token],
+    //         ['email', $request->email],
+    //     ])->first();
+
+    //     if (!$passwordReset) {
+    //         return redirect()->back()->withErrors(['email' => 'This password reset token is invalid.']);
+    //     }
+
+    //     $user = User::where('email', $request->email)->first();
+    //     $user->password = Hash::make($request->password);
+    //     $user->save();
+
+    //     // Delete password reset record
+    //     DB::table('password_resets')->where(['email' => $request->email])->delete();
+
+    //     return redirect()->route('login.index')->with('status', 'Your password has been reset!');
+    // }
 
     public function logout()
     {

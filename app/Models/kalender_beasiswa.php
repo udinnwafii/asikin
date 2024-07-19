@@ -19,6 +19,7 @@ class kalender_beasiswa extends Model
         'tanggal_registrasi',
         'deadline',
         'judul',
+        'nama',
         'deskripsi',
         'jurusan',
         'jenis_beasiswa',

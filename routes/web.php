@@ -21,18 +21,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('frontend', function () {
     return view('frontend.homepage');
 });
 
 //Login, Register, Logout
 Route::resource('login', LoginController::class);
-Route::get('register', [LoginController::class, "register"])->name('register');
-Route::post('login_check', [LoginController::class, "login_check"])->name('login_check'); //validate the email and paswword that was inputed
+Route::get('register', [LoginController::class, 'register'])->name('register');
+
+// Route::get('forgot_password', [LoginController::class, 'forgot_password'])->name('forgot_password');
+// Route::post('/forgot_password', [LoginController::class, 'send_reset_link']);
+// Route::get('recover_password', [LoginController::class, 'recover_password'])->name('recover_password');
+// Route::post('/recover_password', [LoginController::class, 'reset_password']);
+
+Route::post('login_check', [LoginController::class, 'login_check'])->name('login_check'); //validate the email and paswword that was inputed
 Route::get('logout', [LoginController::class, 'logout'])->name('logout'); //loging out the account that currently used
 
 //Route frontend
-Route::get('frontend', [Frontend::class, 'homepage'])->name('homepage');
+Route::get('homepage', [Frontend::class, 'homepage'])->name('homepage');
+Route::get('detail', [Frontend::class, 'detail'])->name('detail');
+// Route::get('detail/{id}', [Frontend::class, 'detail'])->name('detail');
+Route::get('filter', [Frontend::class, 'filter'])->name('beasiswa.filter');
 
 Route::group(['middleware' => 'auth'], function () {
 
