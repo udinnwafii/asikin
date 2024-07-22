@@ -23,30 +23,32 @@ class Frontend extends Controller
         ]);
     }
 
-    public function detail()
+    // public function detail()
+    // {
+    //     $data = kalender_beasiswa::with('negara', 'tingkat_studi')->get();
+    //     $negara = Negara::all();
+    //     $tingkat_studi = tingkat_studi::all();
+
+    //     return view('frontend.detail', [
+    //         'data' => $data,
+    //         'negara' => $negara,
+    //         'tingkat_studi' => $tingkat_studi
+    //     ]);
+    // }
+
+    public function detail($id)
     {
-        $data = kalender_beasiswa::with('negara', 'tingkat_studi')->get();
+        $data = kalender_beasiswa::with('negara', 'tingkat_studi')->findOrFail($id);
         $negara = Negara::all();
         $tingkat_studi = tingkat_studi::all();
-
+    
         return view('frontend.detail', [
             'data' => $data,
             'negara' => $negara,
             'tingkat_studi' => $tingkat_studi
         ]);
     }
-
-//     public function detail($id)
-// {
-//     // Retrieve the specific article by ID with related data
-//     $data = kalender_beasiswa::with('negara', 'tingkat_studi')
-//         ->findOrFail($id); // Use findOrFail to handle cases where the ID is invalid
-
-//     // Pass the retrieved article to the view
-//     return view('frontend.detail', [
-//         'data' => $data
-//     ]);
-// }
+    
 
     // public function filter(Request $request)
     // {

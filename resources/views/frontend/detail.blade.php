@@ -20,59 +20,58 @@
 <!-- Detail Kalender Beasiswa -->
 <section class="page-section" id="DetailKalenderBeasiswa">
     <div class="container">
-        <h1>Tentang</h1>
+        <h1>{{ $data->judul }}</h1>
+        <h2>Tentang</h2>
         <ul class="list-group">
-            @foreach ($data as $item)
             <li class="list-group-item">
                 <div>
                     <strong>Tingkat Studi:</strong>
                     <ul>
-                        @foreach ($item->tingkat_studi as $tingkat)
+                        @foreach ($data->tingkat_studi as $tingkat)
                             <li>{{ $tingkat->nama }}</li>
                         @endforeach
                     </ul>
                     <strong>Negara:</strong>
                     <ul>
-                        @foreach ($item->negara as $neg)
+                        @foreach ($data->negara as $neg)
                             <li>{{ $neg->nama }}</li>
                         @endforeach
                     </ul>
-                    <strong>Tanggal Registrasi:</strong> {{ date('d-m-Y', strtotime($item->tanggal_registrasi)) }}<br>
-                    <strong>Deadline:</strong> {{ date('d-m-Y', strtotime($item->deadline)) }}<br>
-                    <strong>Judul:</strong> {{ $item->judul }}<br>
-                    <strong>Deskripsi:</strong> {{ $item->deskripsi }}<br>
-                    <strong>Jenis Beasiswa:</strong> {{ $item->jenis_beasiswa }}<br>
+                    <strong>Tanggal Registrasi:</strong> {{ date('d-m-Y', strtotime($data->tanggal_registrasi)) }}<br>
+                    <strong>Deadline:</strong> {{ date('d-m-Y', strtotime($data->deadline)) }}<br>
+                    <strong>Judul:</strong> {{ $data->judul }}<br>
+                    <strong>Deskripsi:</strong> {{ $data->deskripsi }}<br>
+                    <strong>Jenis Beasiswa:</strong> {{ $data->jenis_beasiswa }}<br>
                 </div>
             </li>
-            @endforeach
         </ul>
     </div>
 
     {{-- Container Keuntungan --}}
     <div class="container">
-        <h1>Keuntungan</h1>
+        <h2>Keuntungan</h2>
         <ul class="list-group">
             <li class="list-group-item">
-                <strong>Keuntungan:</strong> {{ $item->keuntungan }}<br>
+                <strong>Keuntungan:</strong> {{ $data->keuntungan }}<br>
             </li>
         </ul>
-        </div>
+    </div>
 
-        {{-- Container Persyaratan --}}
+    {{-- Container Persyaratan --}}
     <div class="container">
-        <h1>Persyaratan</h1>
+        <h2>Persyaratan</h2>
         <ul class="list-group">
             <li class="list-group-item">
-        <strong>Umur:</strong> {{ $item->umur }}<br>
-        <strong>GPA:</strong> {{ $item->gpa }}<br>
-        <strong>Tes English:</strong> {{ $item->tes_english }}<br>
-        <strong>Tes Bahasa Lain:</strong> {{ $item->tes_bahasa_lain }}<br>
-        <strong>Tes Standard:</strong> {{ $item->tes_standard }}<br>
-        <strong>Dokumen:</strong> {{ $item->dokumen }}<br>
-        <strong>Lainnya:</strong> {{ $item->lainnya }}<br>
+                <strong>Umur:</strong> {{ $data->umur }}<br>
+                <strong>GPA:</strong> {{ $data->gpa }}<br>
+                <strong>Tes English:</strong> {{ $data->tes_english }}<br>
+                <strong>Tes Bahasa Lain:</strong> {{ $data->tes_bahasa_lain }}<br>
+                <strong>Tes Standard:</strong> {{ $data->tes_standard }}<br>
+                <strong>Dokumen:</strong> {{ $data->dokumen }}<br>
+                <strong>Lainnya:</strong> {{ $data->lainnya }}<br>
             </li>
         </ul>
-        </div>
+    </div>
 </section>
 <!-- /Kalender Beasiswa -->
 @endsection

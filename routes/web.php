@@ -39,8 +39,8 @@ Route::get('logout', [LoginController::class, 'logout'])->name('logout'); //logi
 
 //Route frontend
 Route::get('homepage', [Frontend::class, 'homepage'])->name('homepage');
-Route::get('detail', [Frontend::class, 'detail'])->name('detail');
-// Route::get('detail/{id}', [Frontend::class, 'detail'])->name('detail');
+// Route::get('detail', [Frontend::class, 'detail'])->name('detail');
+Route::get('detail/{id}', [Frontend::class, 'detail'])->name('detail');
 Route::get('filter', [Frontend::class, 'filter'])->name('beasiswa.filter');
 
 Route::group(['middleware' => 'auth'], function () {

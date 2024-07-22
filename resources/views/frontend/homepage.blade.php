@@ -57,7 +57,7 @@
         </div>
 
         <!-- Articles -->
-        <div class="col-lg-9">
+        <div class="col-lg-9" id="KalenderBeasiswa">
             <section class="content">
                 <div class="row" id="articleList">
                     @foreach ($data as $index => $article)
