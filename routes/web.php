@@ -21,8 +21,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('frontend', function () {
-    return view('frontend.homepage');
+Route::get('/', function () {
+    return view('welcome');
 });
 
 //Login, Register, Logout
