@@ -1,3 +1,4 @@
+
 @include('frontend.partials.header')
 
 @yield('content')

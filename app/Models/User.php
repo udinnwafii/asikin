@@ -47,7 +47,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        
     ];
 
     protected $dates = ['deleted_at']; // Specify the column to use for soft deletes

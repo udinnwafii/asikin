@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('negara', function (Blueprint $table) {
+        Schema::create('withlists', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_benua');
-            $table->string('nama');
+            $table->unsignedBigInteger('id_kbeasiswa');
             $table->timestamps();
-            $table->foreign('id_benua')->references('id')->on('benuas');
-            // 
+
+            $table->foreign('id_kbeasiswa')->references('id')->on('kalender_beasiswas');
         });
     }
 
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('negaras');
+        Schema::dropIfExists('withlists');
     }
 };

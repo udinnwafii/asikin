@@ -44,6 +44,7 @@
                 {{ Route::is('level_user.index') ? 'menu-open' : '' }}
                 {{ Route::is('tingkat_studi.index') ? 'menu-open' : '' }}
                 {{ Route::is('negara.index') ? 'menu-open' : '' }}
+                {{ Route::is('pending.index') ? 'menu-open' : '' }}
                 {{ Route::is('benua.index') ? 'menu-open' : '' }}">
                 {{ Route::is('kalender_beasiswa.index') ? 'menu-open' : '' }}
                     <a href="#" class="nav-link">
@@ -89,11 +90,20 @@
                                 <p>Negara</p>
                             </a>
                         </li>
+                       
                         <li class="nav-item">
                             <a href="{{ route('benua.index') }}"
                                 class="nav-link {{ Route::is('benua.index') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Benua</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('pending_kalender') }}"
+                                class="nav-link {{ Route::is('pending.index') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Pending</p>
                             </a>
                         </li>
                     </ul>

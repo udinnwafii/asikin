@@ -53,6 +53,11 @@ class kalender_beasiswa extends Model
     {
         return $this->belongsToMany(tingkat_studi::class, 'ktingkat_studis', 'id_kbeasiswa', 'id_tingkat_studi')->withPivot('deleted_at')->withTimestamps();
     }
+
+    public function wishlist()
+    {
+        return $this->hasMany(Wishlist::class, 'id_kbeasiswa');
+    }
     /**
      * Boot function for the model.
      *

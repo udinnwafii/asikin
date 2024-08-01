@@ -1,13 +1,15 @@
 <?php
 
 use App\Http\Controllers\BenuaController;
-use App\Http\Controllers\Frontend;
+use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\KalenderBeasiswaController;
 use App\Http\Controllers\LevelUserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NegaraController;
+use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\TingkatStudiController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,35 +24,56 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('frontend.home');
 });
 
 //Login, Register, Logout
 Route::resource('login', LoginController::class);
 Route::get('register', [LoginController::class, 'register'])->name('register');
-
-// Route::get('forgot_password', [LoginController::class, 'forgot_password'])->name('forgot_password');
-// Route::post('/forgot_password', [LoginController::class, 'send_reset_link']);
-// Route::get('recover_password', [LoginController::class, 'recover_password'])->name('recover_password');
-// Route::post('/recover_password', [LoginController::class, 'reset_password']);
-
 Route::post('login_check', [LoginController::class, 'login_check'])->name('login_check'); //validate the email and paswword that was inputed
 Route::get('logout', [LoginController::class, 'logout'])->name('logout'); //loging out the account that currently used
 
+//Login, Register, Logout Subscriber
+Route::get('subscriber_login', [LoginController::class, 'subscriber_login'])->name('subscriber_login');
+Route::get('subscriber_register', [LoginController::class, 'subscriber_register'])->name('subscriber_register');
+Route::post('subscriber_store', [LoginController::class, 'subscriber_store'])->name('subscriber_store');
+Route::post('subscriber_check', [loginController::class, 'subscriber_check'])->name('subscriber_check'); //validate the email and paswword that was inputed
+Route::get('logout', [LoginController::class, 'logout'])->name('logout');
+
 //Route frontend
-Route::get('homepage', [Frontend::class, 'homepage'])->name('homepage');
-// Route::get('detail', [Frontend::class, 'detail'])->name('detail');
-Route::get('detail/{id}', [Frontend::class, 'detail'])->name('detail');
-Route::get('filter', [Frontend::class, 'filter'])->name('beasiswa.filter');
+Route::get('home', [FrontendController::class, 'home'])->name('home');
+Route::get('kalender', [FrontendController::class, 'kalender'])->name('kalender');
+Route::get('detail/{id}', [FrontendController::class, 'detail'])->name('detail');
+Route::get('/filter', [FrontendController::class, 'filter'])->name('beasiswa.filter');
+Route::get('/register/{id}', [FrontendController::class, 'daftarBeasiswa'])->name('daftar_beasiswa');
+
+
+
 
 Route::group(['middleware' => 'auth'], function () {
+    //Proposal
+    Route::resource('proposal', ProposalController::class,);
+    Route::get('/proposal', [ProposalController::class, 'index'])->name('frontend.proposal');
+    Route::post('/proposal', [ProposalController::class, 'store'])->name('proposal.store');
 
+
+    //Wishlist
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
+    Route::post('/wishlist_store', [WishlistController::class, 'store'])->name('wishlist.store');
+    Route::delete('/wishlist_remove/{id}', [WishlistController::class, 'destroy'])->name('wishlist.remove');
+    Route::post('/wishlist/add', [WishlistController::class, 'add'])->name('wishlist.add');
+
+    //kalender
     Route::resource('kalender_beasiswa', KalenderBeasiswaController::class);
     Route::resource('tingkat_studi', TingkatStudiController::class);
     Route::resource('user', UserController::class);
     Route::resource('level_user', LevelUserController::class);
     Route::resource('negara', NegaraController::class);
     Route::resource('benua', BenuaController::class);
+    // Route untuk halaman pending
+    Route::get('/pending_kalender', [KalenderBeasiswaController::class, 'pending_kalender'])->name('pending_kalender');
+    //Accpet
+    Route::patch('/kalender_beasiswa/{id}/accept', [KalenderBeasiswaController::class, 'accept'])->name('kalender_beasiswa.accept');
 
     // Route soft delete, restore, and force delete for Kalender Beasiswa
     Route::get('kbeasiswa_soft_delete', [KalenderBeasiswaController::class, 'soft_delete'])->name('kbeasiswa_soft_delete');

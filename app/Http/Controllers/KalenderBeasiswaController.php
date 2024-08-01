@@ -82,6 +82,7 @@ class KalenderBeasiswaController extends Controller
         //
     }
 
+
     /**
      * Show the form for editing the specified resource.
      * Retrieves data for editing a specific scholarship calendar entry.
@@ -192,14 +193,39 @@ class KalenderBeasiswaController extends Controller
     }
 
     public function force_delete($id)
+    {
+        // Find the Kalender Beasiswa with the given ID, including soft-deleted records
+        $kalender = kalender_beasiswa::withTrashed()->findOrFail($id);
+
+        // Perform force delete
+        $kalender->forceDelete();
+
+        // Redirect back with success message
+        return redirect()->route('kbeasiswa_soft_delete')->with('success', 'Kalender Beasiswa permanently deleted.');
+    }
+    public function pending_kalender()
+    {
+        // Mendapatkan entri dengan status 'pending' dalam tabel kalender_beasiswa beserta hubungannya dengan negara dan tingkat_studi
+        $data = kalender_beasiswa::with('negara', 'tingkat_studi')->where('status_tampil', 0)->get();        
+        $negara = negara::all();
+        $tingkat_studi = tingkat_studi::all();
+    
+        return view('pending_kalender.index', ['data' => $data, 'negara' => $negara, 'tingkat_studi' => $tingkat_studi]);
+    }
+
+
+    public function accept($id)
 {
-    // Find the Kalender Beasiswa with the given ID, including soft-deleted records
-    $kalender = kalender_beasiswa::withTrashed()->findOrFail($id);
+    try {
+        $kalenderBeasiswa = kalender_beasiswa::findOrFail($id);
+        $kalenderBeasiswa->status_tampil = 1; // Assuming '1' means accepted
+        $kalenderBeasiswa->save();
 
-    // Perform force delete
-    $kalender->forceDelete();
-
-    // Redirect back with success message
-    return redirect()->route('kbeasiswa_soft_delete')->with('success', 'Kalender Beasiswa permanently deleted.');
+        return redirect()->route('kalender_beasiswa.index')->with('success', 'Proposal accepted successfully.');
+    } catch (\Exception $e) {
+        return redirect()->route('kalender_beasiswa.index')->with('error', 'Failed to accept proposal.');
+    }
 }
+
+    
 }
