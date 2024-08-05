@@ -3,7 +3,7 @@
 @section('content')
 
 <!-- Form to Create a New Scholarship Calendar Proposal -->
-<div class="container mt-5">
+<div class="container mt-20">
     <section class="proposal">
         <form action="{{ route('proposal.store') }}" method="post">
             @csrf
