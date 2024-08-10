@@ -83,16 +83,17 @@
                                             <td>{{ $item->deleted_at->format('d-m-Y H:i:s') }}</td>
                                             <td>{{ $item->deleted_at->addDays(30)->diffForHumans(null, true) }}</td>
                                             <td>
-                                                <form action="{{ route('kbeasiswa_restore', $item->id) }}" method="POST">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-success">Restore</button>
-                                                </form>
-                                                <form action="{{ route('kbeasiswa_force_delete', $item->id) }}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger"
-                                                    onclick="return confirm('Yakin Untuk Menghapus Data ini Secara Permanent?')">Permanent Delete</button>
-                                                </form>
+                                                <div class="d-flex">
+                                                    <form action="{{ route('kbeasiswa_restore', $item->id) }}" method="POST" class="mr-2">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-success mb-1">Restore</button>
+                                                    </form>
+                                                    <form id="delete-form-{{ $item->id }}" action="{{ route('kbeasiswa_force_delete', $item->id) }}" method="POST" style="display: none;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                    </form>
+                                                    <button type="button" class="btn btn-danger mb-1" onclick="confirmDelete({{ $item->id }})">Permanent Delete</button>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -127,6 +128,9 @@
     <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
     <script>
         $(document).ready(function() {
             $('#example2').DataTable({
@@ -139,6 +143,35 @@
                 "responsive": true,
             });
         });
+
+        function confirmDelete(id) {
+            Swal.fire({
+                title: "Apakah anda yakin?",
+                text: "Data akan dihapus permanen !",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, Hapus!",
+                cancelButtonText: "Tidak, Batalkan!",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                    Swal.fire({
+                        title: "Hapus!",
+                        text: "Data Kalender Anda Telah Dihapus.",
+                        icon: "Berhasil"
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire({
+                        title: "Batal",
+                        text: "Data Kalender Anda Aman:)",
+                        icon: "error"
+                    });
+                }
+            });
+        }
     </script>
 </body>
 

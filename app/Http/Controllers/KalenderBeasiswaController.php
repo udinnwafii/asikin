@@ -22,15 +22,6 @@ class KalenderBeasiswaController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     * No specific implementation as creating is handled directly in store().
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      * Validates and stores a new scholarship calendar entry.
      */
@@ -72,17 +63,6 @@ class KalenderBeasiswaController extends Controller
         return redirect()->route('kalender_beasiswa.index')->with('success', 'Kalender Beasiswa created successfully.');
     }
 
-
-    /**
-     * Display the specified resource.
-     * No specific implementation as showing is not currently utilized.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-
     /**
      * Show the form for editing the specified resource.
      * Retrieves data for editing a specific scholarship calendar entry.
@@ -104,8 +84,6 @@ class KalenderBeasiswaController extends Controller
     {
         // Validation rules for incoming request data
         $validatedData = $request->validate([
-            'id_negara' => 'nullable',
-            'id_tingkat_studi' => 'nullable',
             'tanggal_registrasi' => 'nullable',
             'deadline' => 'nullable',
             'judul' => 'nullable',
@@ -143,7 +121,6 @@ class KalenderBeasiswaController extends Controller
             $kalenderBeasiswa->tingkat_studi()->detach();
         }
 
-        // Redirect back to the index route with a success message
         return redirect()->route('kalender_beasiswa.index')->with('success', 'Kalender Beasiswa updated successfully.');
     }
 
@@ -151,8 +128,6 @@ class KalenderBeasiswaController extends Controller
      * Remove the specified resource from storage.
      * Deletes a scholarship calendar entry and detaches related records.
      */
-
-
     public function destroy($id)
     {
         try {
@@ -203,6 +178,7 @@ class KalenderBeasiswaController extends Controller
         // Redirect back with success message
         return redirect()->route('kbeasiswa_soft_delete')->with('success', 'Kalender Beasiswa permanently deleted.');
     }
+
     public function pending_kalender()
     {
         // Mendapatkan entri dengan status 'pending' dalam tabel kalender_beasiswa beserta hubungannya dengan negara dan tingkat_studi
@@ -213,19 +189,16 @@ class KalenderBeasiswaController extends Controller
         return view('pending_kalender.index', ['data' => $data, 'negara' => $negara, 'tingkat_studi' => $tingkat_studi]);
     }
 
-
     public function accept($id)
-{
-    try {
-        $kalenderBeasiswa = kalender_beasiswa::findOrFail($id);
-        $kalenderBeasiswa->status_tampil = 1; // Assuming '1' means accepted
-        $kalenderBeasiswa->save();
+    {
+        try {
+            $kalenderBeasiswa = kalender_beasiswa::findOrFail($id);
+            $kalenderBeasiswa->status_tampil = 1; // Assuming '1' means accepted
+            $kalenderBeasiswa->save();
 
-        return redirect()->route('kalender_beasiswa.index')->with('success', 'Proposal accepted successfully.');
-    } catch (\Exception $e) {
-        return redirect()->route('kalender_beasiswa.index')->with('error', 'Failed to accept proposal.');
+            return redirect()->route('kalender_beasiswa.index')->with('success', 'Proposal accepted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('kalender_beasiswa.index')->with('error', 'Failed to accept proposal.');
+        }
     }
-}
-
-    
 }

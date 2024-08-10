@@ -39,7 +39,7 @@ class NegaraController extends Controller
     Negara::create($validate);
 
     return redirect('/negara')
-        ->with('success', 'Berhasil Melakukan Pengiriman');
+        ->with('success', 'Berhasil Menambah Negara');
 }
 
 
@@ -90,7 +90,7 @@ class NegaraController extends Controller
             // Soft delete the main negara record
             $Negara->delete();
 
-            return redirect()->route('negara.index')->with('success', 'Negara Beasiswa deleted successfully.');
+            return redirect()->route('negara.index')->with('success', 'Negara  deleted successfully.');
         } catch (\Exception $e) {
             return redirect()->route('negara.index')->with('error', 'Failed to delete Negara Beasiswa.');
         }

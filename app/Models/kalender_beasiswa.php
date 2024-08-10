@@ -31,6 +31,7 @@ class kalender_beasiswa extends Model
         'tes_standard',
         'dokumen',
         'lainnya',
+        'link_pendaftaran',
         'status_tampil'
     ];
 

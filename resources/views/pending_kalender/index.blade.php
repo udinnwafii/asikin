@@ -95,7 +95,7 @@
                                                         <form action="{{ route('kalender_beasiswa.accept', $item->id) }}" method="POST" style="display:inline;">
                                                             @csrf
                                                             @method('PATCH')
-                                                            <button type="submit" class="btn btn-success" onclick="return confirm('Are you sure you want to accept this proposal?')">Terima Proposal</button>
+                                                            <button type="submit" class="btn btn-success" onclick="return confirm('Apakah Anda yakin ingin menerima proposal ini?')">Terima Artikel</button>
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -111,4 +111,26 @@
             </div>
         </section>
     </div>
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    @if(session('Berhasil'))
+    Swal.fire({
+        icon: 'Berhasil',
+        title: 'Berhasil!',
+        text: '{{ session('Berhasil') }}',
+        timer: 3000,
+        showConfirmButton: false
+    });
+    @endif
+    @if(session('error'))
+    Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: '{{ session('error') }}',
+        timer: 3000,
+        showConfirmButton: false
+    });
+    @endif
+</script>
 @endsection

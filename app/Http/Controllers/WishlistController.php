@@ -29,18 +29,18 @@ class WishlistController extends Controller
         return view('frontend.wishlist', compact('wishlists'));
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'id_kbeasiswa' => 'required|exists:kalender_beasiswas,id',
-        ]);
+  public function store(Request $request)
+{
+    $request->validate([
+        'id_kbeasiswa' => 'required|exists:kalender_beasiswas,id',
+    ]);
 
-        Wishlist::create([
-            'id_kbeasiswa' => $request->id_kbeasiswa,
-        ]);
+    Wishlist::create([
+        'id_kbeasiswa' => $request->id_kbeasiswa,
+    ]);
 
-        return redirect()->back()->with('success', 'Added to wishlist!');
-    }
+    return redirect()->back()->with('success', 'Added to wishlist!');
+}
 
     public function destroy($id)
     {

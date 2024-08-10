@@ -110,17 +110,21 @@ class LoginController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-
+    
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-
-            return redirect()->intended('/kalender_beasiswa');
+    
+            // Redirect dengan pesan sukses
+            return redirect()->intended('/kalender_beasiswa')->with('success', 'Login berhasil!');
         }
-
+    
+        // Redirect kembali dengan pesan error
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
-        ]);
+        ])->with('error', 'Login gagal! Periksa email dan password Anda.');
     }
+    
+    
 
     public function logout()
     {
